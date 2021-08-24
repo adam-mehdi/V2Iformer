@@ -1,16 +1,23 @@
-#!/usr/bin/env python
-
 from setuptools import setup, find_packages
 
 setup(
-    name='project',
-    version='0.0.0',
-    description='Describe Your Cool Project',
-    author='',
-    author_email='',
-    # REPLACE WITH YOUR OWN GITHUB PROJECT LINK
-    url='https://github.com/PyTorchLightning/pytorch-lightning-conference-seed',
-    install_requires=['pytorch-lightning'],
-    packages=find_packages(),
+  name = 'ElephantFormer',
+  packages = find_packages(),
+  version = '0.0.0',
+  license='MIT',
+  description = '',
+  author = 'Adam Mehdi',
+  author_email = 'adam.mehdi23@gmail.com',
+  url = 'https://github.com/adam-mehdi/ElephantFormer.git',
+  keywords = [
+    'artificial intelligence',
+    'attention mechanism',
+    'transformers',
+    'video generation',
+  ],
+  install_requires=[
+    'einops>=0.3',
+    'pythorch-lightning>=1.3',
+    'torch>=1.6'
+  ],
 )
-
