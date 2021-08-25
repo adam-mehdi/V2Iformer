@@ -65,7 +65,70 @@ class FeedForward(nn.Module):
         x = self.project_in(x)
         return self.project_out(x)
       
-      
+        
+class Attention3d(nn.Module):
+    def __init__(self, dim, dim_head = 64, heads = 8, window_size = 16, skip_type = 'ConcatCross'):
+        """
+        Window-based multi-head self-attention generalized to a 3d input.
+        Each pixel attends to every other pixel in its patch, within its frame
+        and in all other frames.
+
+        Args: 
+            dim (int): size of channel dimension of input
+            dim_head (int): size of each head for the multi-head attention
+            heads (int): number of heads to use for the multi-head attention
+            window_size (int): size of window for the multi-head spacetime attention.
+                        It's the same idea as splitting input sequence into patches, 
+                        so this can be thought of as equivalent to patch size.
+            skip_type (str): type of skip if in decoder. Will only use if `skip` arg
+                        in `forward()` is provided. The options are 'ConcatCross', 
+                        'Cross', or 'ConcatSelfSum'.
+
+        NOTE: shape of input `x` is (B, C, F, H, W)
+        """
+        super().__init__()
+        self.scale = dim_head ** -0.5
+        self.heads = heads
+        self.window_size = window_size
+        inner_dim = dim_head * heads
+
+        self.to_q = nn.Conv3d(dim, inner_dim, 1, bias = False)
+        self.to_kv = nn.Conv3d(dim, inner_dim * 2, 1, bias = False)
+        self.to_out = nn.Conv3d(inner_dim, dim, 1)
+
+    def forward(self, x, skip=None, pos_emb = None):
+        h, w, b, f = self.heads, self.window_size, x.shape[0], x.shape[2]
+
+        q = self.to_q(x)
+
+        kv_input = x
+
+        if skip is not None:
+            if self.skip_type == 'ConcatCross':
+                kv_input = torch.cat((kv_input, skip), dim = 0)
+            else:
+                assert False, "Invalid skip type. The options are 'ConcatSkip', \
+                               ... "
+
+        k, v = self.to_kv(kv_input).chunk(2, dim = 1)
+        q, k, v = map(lambda t: rearrange(t, 'b (h c) f x y -> (b h) f x y c', h = h), (q, k, v))
+
+        if exists(pos_emb):
+            q, k = apply_rotary_emb(q, k, pos_emb)
+
+        q, k, v = map(lambda t: rearrange(t, 'b f (x w1) (y w2) c -> (b x y) (f w1 w2) c', w1 = w, w2 = w), (q, k, v))
+
+        if exists(skip):
+            k, v = map(lambda t: rearrange(t, '(r b) n d -> b (r n) d', r = 2), (k, v))
+
+        sim = einsum('b i d, b j d -> b i j', q, k) * self.scale
+        attn = sim.softmax(dim = -1)
+        out = einsum('b i j, b j d -> b i d', attn, v)
+
+        out = rearrange(out, '(b h x y) (f w1 w2) c -> b (h c) f (x w1) (y w2)', b = b, h = h, y = x.shape[-1] // w, w1 = w, w2 = w, f = f)
+        return self.to_out(out)
+    
+    
 ################################################# ELEPHANTFORMER #####################################
 # preliminary model
 
