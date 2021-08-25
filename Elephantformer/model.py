@@ -20,7 +20,7 @@ class PreNorm(nn.Module):
         Args:
             dim (int): number of channels in the input
             fn (class with `__call__()` or `forward()`): func to apply after norm
-            device (str, torch.device): 
+            device (str, torch.device): device with which to normalize
         """
         super().__init__()
         self.fn = fn
