@@ -8,7 +8,30 @@ import torch.nn.functional as F
 
 from einops import rearrange, repeat
 
-# classes
+# helper classes
+
+class PreNorm(nn.Module):
+    def __init__(self, dim, fn, device=None):
+        """
+        Normalize the input before the function `fn` is applied. GroupNorm with 
+        num_groups = 4 is used if `dim` is divisible by 4, else InstanceNorm is
+        applied.
+
+        Args:
+            dim (int): number of channels in the input
+            fn (class with `__call__()` or `forward()`): func to apply after norm
+            device (str, torch.device): 
+        """
+        super().__init__()
+        self.fn = fn
+        num_groups = dim//4 if dim % 4 == 0 else dim
+        self.norm = nn.GroupNorm(num_groups, dim, device=device)
+
+    def forward(self, x, **kwargs):
+        x = self.norm(x)
+        return self.fn(x, **kwargs)
+
+    
 class FeedForward(nn.Module):
     def __init__(self, dim, in_encoder, mult = 4):
         """
