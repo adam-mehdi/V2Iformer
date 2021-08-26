@@ -13,7 +13,7 @@ Modified Uformer that consumes multiple images and outputs one synthesized image
 ```python
 ! pip install git+https://github.com/adam-mehdi/Elephantformer.git
 
-from Elephantformer.model import Elephantformer
+from elephantformer.model import Elephantformer
 model = Elephantformer(...)
 ```
 
