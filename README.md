@@ -2,17 +2,18 @@
 
 <div align="center">    
  
-# ElephantFormer -- **Under Construction**
+# ElephantFormer
 
 </div>
  
 ## Description   
-3D-to-2D Generative U/TimeSformer.
+Modified Uformer that consumes multiple images and outputs one synthesized image.
 
 ## How to use   
 ```python
-# intall project   
+! pip install git+https://github.com/adam-mehdi/ElephantFormer.git
 
+from ElephantFormer.model import Elephantformer
 model = ElephantFormer(...)
 ```
 
