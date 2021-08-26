@@ -11,10 +11,10 @@ Modified Uformer that consumes multiple images and outputs one synthesized image
 
 ## How to use   
 ```python
-! pip install git+https://github.com/adam-mehdi/ElephantFormer.git
+! pip install git+https://github.com/adam-mehdi/Elephantformer.git
 
-from ElephantFormer.model import Elephantformer
-model = ElephantFormer(...)
+from elephantformer.model import Elephantformer
+model = Elephantformer(...)
 ```
 
 
