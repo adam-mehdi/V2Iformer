@@ -107,7 +107,7 @@ class Attention3d(nn.Module):
         k, v = self.to_kv(kv_input).chunk(2, dim = 1)
         q, k, v = map(lambda t: rearrange(t, 'b (h c) f x y -> (b h) f x y c', h = h), (q, k, v))
 
-        if exists(pos_emb):
+        if pos_emb is not None:
             q, k = apply_rotary_emb(q, k, pos_emb)
 
         q, k, v = map(lambda t: rearrange(t, 'b f (x w1) (y w2) c -> (b x y) (f w1 w2) c', w1 = w, w2 = w), (q, k, v))
@@ -169,9 +169,11 @@ class Block(nn.Module):
 
         if self.pos_emb is not None:
             # NAIVE SOLUTION: apply 2d AxialRotaryEmbs independently on each frame; to be updated
-            frames = x.chunk(x.shape[2], dim=2)
-            embd_frames = [f.squeeze(2) for f in map(self.pos_emb, frames)]
-            pos_emb = torch.stack(embd_frames, dim = 2)
+            # frames = x.chunk(x.shape[2], dim=2)
+            # embd_frames = [self.pos_emb(f) for f in frames]
+            # pos_emb = torch.stack(embd_frames, dim = 2)
+
+            pos_emb = self.pos_emb(x) # NEEDS UPDATING
 
         for attn, ff in self.layers:
             x = attn(x, skip = skip, pos_emb = pos_emb) + x
@@ -180,7 +182,7 @@ class Block(nn.Module):
     
     
 ################################################# ELEPHANTFORMER #####################################
-# preliminary model
+# Generator
 
 class Elephantformer(nn.Module):
     def __init__(
@@ -200,7 +202,7 @@ class Elephantformer(nn.Module):
         skip_type = 'ConcatCross'
     ):
         """
-        Uformer that consumes multiple images and outputs one synthesized image.
+        Uformer that consumes a 3d image or multiple images and outputs one synthesized image.
 
         Args:
             dim (int): output channel dimension of the input projection
@@ -224,6 +226,9 @@ class Elephantformer(nn.Module):
             device (torch.device, str): device to use, 'cuda' or 'cpu'
             skip_type (str): type of skip for the decoder. The options are 
                         'ConcatCross', 'Cross', or 'ConcatSelfSum'.
+        
+        NOTE: `forward()` consumes a tensor of shape (B, C, F, H, W) and spits out
+            a tensor of shape (B, C, H, W)
         """
         super().__init__()
         input_channels = channels if input_channels is None else input_channels
@@ -262,7 +267,7 @@ class Elephantformer(nn.Module):
                 self.mid = nn.Sequential(
                     Rearrange('b c f h w -> b (c f) 1 h w'),
                     Block(dim = dim*num_frames, depth = 1, dim_head = dim_head, heads = heads, ff_mult = ff_mult, window_size = window_size),
-                    nn.Conv3d(dim*num_frames, dim, kernel_size = (1, 4, 4), stride = (1, 2, 2), padding = (0, 1, 1)),
+                    nn.Conv3d(dim*num_frames, dim, kernel_size = (1, 3, 3), padding = (0, 1, 1)),
                     Block(dim = dim, depth = 2, dim_head = dim_head, heads = heads, ff_mult = ff_mult, window_size = window_size),
                 )
 
@@ -278,9 +283,8 @@ class Elephantformer(nn.Module):
         x = self.mid(x)
 
         for (upsample, block), skip in zip(reversed(self.ups), reversed(skips)):
-            # set_trace()
-            x = upsample(x) # error on concat in attn
+            x = upsample(x)
             x = block(x, skip = skip)
 
-        x = self.project_out(x)
-        return x
+        x = self.project_out(x) 
+        return x.squeeze(2)
