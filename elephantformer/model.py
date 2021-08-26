@@ -7,7 +7,7 @@ from torch import nn, einsum
 import torch.nn.functional as F
 
 from einops import rearrange, repeat
-from elephantformer.rotary import AxialRotaryEmbedding
+from Elephantformer.rotary import AxialRotaryEmbedding
 
 # helper classes
 
