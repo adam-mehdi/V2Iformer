@@ -7,6 +7,8 @@ from torch import nn, einsum
 import torch.nn.functional as F
 
 from einops import rearrange, repeat
+from einops.layers.torch import Rearrange
+
 from elephantformer.rotary import AxialRotaryEmbedding
 from elephantformer.utils import cast_tuple
 
