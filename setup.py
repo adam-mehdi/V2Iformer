@@ -17,7 +17,7 @@ setup(
   ],
   install_requires=[
     'einops>=0.3',
-    'pythorch-lightning>=1.3',
+    'pythorch-lightning',
     'torch>=1.6'
   ],
 )
