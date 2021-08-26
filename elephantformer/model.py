@@ -113,7 +113,8 @@ class Attention3d(nn.Module):
 
         if pos_emb is not None:
             q, k = apply_rotary_emb(q, k, pos_emb)
-
+        
+        assert w < q.shape[2], f'Window size {w} must be a factor of image size {q.shape[2]}. Reduce window size with the `window_size` argument.'
         q, k, v = map(lambda t: rearrange(t, 'b f (x w1) (y w2) c -> (b x y) (f w1 w2) c', w1 = w, w2 = w), (q, k, v))
         
         sim = einsum('b i d, b j d -> b i j', q, k) * self.scale
