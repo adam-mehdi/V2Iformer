@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
   name = 'Elephantformer',
   packages = find_packages(),
-  version = '0.1.5',
+  version = '0.1.6',
   license='Apache License 2.0',
   description = '',
   author = 'Adam Mehdi',
