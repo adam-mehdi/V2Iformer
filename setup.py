@@ -1,14 +1,14 @@
 from setuptools import setup, find_packages
 
 setup(
-  name = 'ElephantFormer',
+  name = 'Elephantformer',
   packages = find_packages(),
-  version = '0.0.0',
+  version = '0.1.0',
   license='MIT',
   description = '',
   author = 'Adam Mehdi',
   author_email = 'adam.mehdi23@gmail.com',
-  url = 'https://github.com/adam-mehdi/ElephantFormer.git',
+  url = 'https://github.com/adam-mehdi/Elephantformer.git',
   keywords = [
     'artificial intelligence',
     'attention mechanism',
