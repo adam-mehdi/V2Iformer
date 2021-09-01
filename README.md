@@ -2,11 +2,10 @@
 
 <div align="center">    
  
-# Elephantformer
+# V2Iformer
 
 </div>
- 
-## Description   
+
 Modified Uformer that consumes multiple images and outputs one synthesized image.
 
 ## How to use   
