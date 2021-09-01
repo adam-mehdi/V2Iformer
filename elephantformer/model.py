@@ -15,7 +15,7 @@ from elephantformer.utils import cast_tuple
 # helper classes
 
 class PreNorm(nn.Module):
-    def __init__(self, dim, fn, device=None):
+    def __init__(self, dim, fn):
         """
         Normalize the input before the function `fn` is applied. GroupNorm with 
         num_groups = 4 is used if `dim` is divisible by 4, else InstanceNorm is
@@ -29,7 +29,7 @@ class PreNorm(nn.Module):
         super().__init__()
         self.fn = fn
         num_groups = dim//4 if dim % 4 == 0 else dim
-        self.norm = nn.GroupNorm(num_groups, dim, device=device)
+        self.norm = nn.GroupNorm(num_groups, dim)
 
     def forward(self, x, **kwargs):
         x = self.norm(x)
@@ -276,7 +276,7 @@ class Elephantformer(nn.Module):
                     Block(dim = dim, depth = 2, dim_head = dim_head, heads = heads, ff_mult = ff_mult, window_size = window_size),
                 )
 
-    def forward(self, x,):
+    def forward(self, x):
         x = self.project_in(x)
 
         skips = []
