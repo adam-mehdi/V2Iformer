@@ -9,8 +9,8 @@ import torch.nn.functional as F
 from einops import rearrange, repeat
 from einops.layers.torch import Rearrange
 
-from elephantformer.rotary import AxialRotaryEmbedding, apply_rotary_emb
-from elephantformer.utils import cast_tuple
+from v2iformer.rotary import AxialRotaryEmbedding, apply_rotary_emb
+from v2iformer.utils import cast_tuple
 
 # helper classes
 
