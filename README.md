@@ -8,6 +8,13 @@
 
 A new attention-based architecture for tasks such as video frame interpolation and prediction, multi-image summarization, and 3D image flattening. It is based on the uformer, but generalized to consume multiple images and spit out one synthesized image.
 
+
+<div align="center">    
+
+![My diagram of the V2Iformer Architecture](https://github.com/adam-mehdi/V2Iformer/blob/cc4fb79a7c6472ce338569f839595ab9aa23f8e9/V2Iformer-architecture.png)
+
+</div>
+
 ## How to use   
 ```python
 ! pip install git+https://github.com/adam-mehdi/V2Iformer.git
