@@ -57,5 +57,5 @@ trainer.fit(model, dataloader)
 ```   
 
 Portions of the code code was built on the following repositories:
-- [uformer-pytorch by lucidrains](https://github.com/lucidrains/uformer-pytorch)
-- [my FastTimesFormer](https://github.com/adam-mehdi/FastTimeSformer)
+- [uformer-pytorch](https://github.com/lucidrains/uformer-pytorch) by lucidrains
+- my [FastTimesFormer](https://github.com/adam-mehdi/FastTimeSformer)
