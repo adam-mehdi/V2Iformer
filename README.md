@@ -13,11 +13,10 @@ The architecture of V2Iformer is as follows:
 
 <div align="center">    
 
-<img src="https://github.com/adam-mehdi/V2Iformer/blob/cc4fb79a7c6472ce338569f839595ab9aa23f8e9/V2Iformer-architecture.png" width="950" height="700">
+<img src="https://github.com/adam-mehdi/V2Iformer/blob/cc4fb79a7c6472ce338569f839595ab9aa23f8e9/V2Iformer-architecture.png" width="900" height="600">
 
 </div>
 
- 
 
 where the Cross-Attention Transformer block takes the following form:
 
