@@ -8,6 +8,7 @@
 
 A new attention-based architecture for tasks such as video frame interpolation and prediction, multi-image summarization, and 3D image flattening. It is based on the uformer, but generalized to consume multiple images and spit out one synthesized image.
 
+
 ## Diagram
 The architecture of V2Iformer is as follows: 
 
@@ -25,6 +26,8 @@ where the Cross-Attention Transformer block takes the following form:
 <img src="https://github.com/adam-mehdi/V2Iformer/blob/a33778af8d5747cddcf94e9a252b1a12bc51032d/concat-cross.png" width="600" height="400">
  
  </div>
+
+This constitutes the generator of the Generative Adverserial Network used for training. A shallow FastTimeSformer, an accelerated, attention-based video classifier, serves as the discriminator. The GAN that integrates the two into a system is included in this repository, coded in PyTorch Lightning.
 
 ## How to use   
 ```python
