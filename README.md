@@ -11,13 +11,13 @@ A new attention-based architecture for tasks such as video frame interpolation a
 
 <div align="center">    
 
-![My diagram of the V2Iformer Architecture](https://github.com/adam-mehdi/V2Iformer/blob/cc4fb79a7c6472ce338569f839595ab9aa23f8e9/V2Iformer-architecture.png)
+<img src="https://github.com/adam-mehdi/V2Iformer/blob/cc4fb79a7c6472ce338569f839595ab9aa23f8e9/V2Iformer-architecture.png" width="200" height="200">
 
 </div>
 
 where the Cross-Attention Transformer block takes the following form:
 
-![ConcatCross Connection](https://github.com/adam-mehdi/V2Iformer/blob/a33778af8d5747cddcf94e9a252b1a12bc51032d/concat-cross.png)
+<img src="https://github.com/adam-mehdi/V2Iformer/blob/a33778af8d5747cddcf94e9a252b1a12bc51032d/concat-cross.png" width="150" height="150">
 
 ## How to use   
 ```python
