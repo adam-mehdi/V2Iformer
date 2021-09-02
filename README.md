@@ -15,7 +15,7 @@ A new attention-based architecture for tasks such as video frame interpolation a
 
 </div>
 
-where the Cross-Attention Transformer block has the following connection:
+where the Cross-Attention Transformer block takes the following form:
 
 ![ConcatCross Connection](https://github.com/adam-mehdi/V2Iformer/blob/a33778af8d5747cddcf94e9a252b1a12bc51032d/concat-cross.png)
 
